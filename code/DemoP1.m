@@ -22,36 +22,59 @@
 % Actualización : septiembre 2022
 %
 %-------------------------------------------------------------------------
-clear all
-clc
-%-- Parámetros básicos (basic parameters)
+%
+% This file was modified in carrying out the lab exercise, following the
+% lab guide.
+%
+% Updated by : Alonso Herreros <alonso.herreros.c@gmail.com>
+%       Date : november 2024
+%
+%-------------------------------------------------------------------------
 
-M = 16;                 % Orden de la constelación (Constellation order)
-m = log2(M);            % Bits por símbolo (Bits per symbol)
+%% -- Init
+% Apparently, "Using 'clear' with the 'all' option usually decreases code
+% performance and is often unnecessary"
+% clear all
+% clc
+
+
+%% -- Basic parameters
+
+M = 16;                 % Constellation order
+m = log2(M);            % Bits per symbol
 nSimb = 1e6;            % Number of symbols in the simulation
 nBits = nSimb * m;      % Number of bits in the simulation
 tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
-SNR_dB = 25;            % Relación señal a ruido en dB (S/N in dB)
-Es = 10;                % Energía media por símbolo (Mean Energy per Symbol)
-p=[1];                  % Canal discreto equivalente (Equivalent discrete channel)
+SNR_dB = 25;            % S/N in dB
+Es = 10;                % Mean Energy per Symbol
+p=[1];                  % Equivalent discrete channel
 
-%-- Modulador Digital QAM (Digital QAM Modulator)
+%% -- Digital QAM Modulator
 
-% Generación de bits (Generation of Bits) 
-B = randi([0 1],nBits,1);
-% Codificación de bits en símbolos (Symbols encoded from bits)
-A = qammod(B,M,tAssig,'InputType','bit'); 
-% Diagrama de dispersión de los símbolos (Scattering diagram)
-scatterplot(A);title('Scatter Plot A[n]')
+% Generation of Bits 
+B = randi([0 1], nBits, 1);
+% Symbols encoded from bits
+A = qammod(B, M, tAssig, InputType='bit'); 
+% Scatter diagram
+f = figure(1);
+scatterplot(A);title('Scatter plot of original A[n]');
+print('../figures/1.A.png', '-dpng');
 
-% Transmisión a través del canal (Transmission through channel)
-o = conv(A,p);
+%% -- Tx & Rx
+
+% Transmission through channel
+o = conv(A, p);
 o = o(1:nSimb);
 
-% Ruido Aditivo Blanco Gausiano (Additive White Gaussian Noise)
-q = awgn(o,SNR_dB,10*log10(Es));
-scatterplot(q);title('Scatter Plot q[n]')
+for snr=[20 15 10 5]
+    % Additive White Gaussian Noise
+    q = awgn(o, snr, 10*log10(Es));
+    scatterplot(q);
+    title(sprintf('Scatter Plot of q[n] for N_0 = %d', Es * 10^(-snr/10)))
+    print(sprintf('../figures/1.snr%d.png', snr), '-dpng');
+end
 
-% Demodulación a nivel de bit (Bit-level demodulation)
-Be = qamdemod(q,M,tAssig,'OutputType','bit');
+
+% Bit-level demodulation
+Be = qamdemod(q, M, tAssig, OutputType='bit');
  
