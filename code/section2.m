@@ -74,7 +74,7 @@ function [q] = experiment2(M, nSimb, SNR_dB, Es, p, A, a)
 
     % Plot
     scatterplot(q);
-    title(sprintf('Scatter plot of q[n] for %d-QAM dB and $a=\\frac{1}{%d}$', M, 1/a))
+    title(sprintf('Scatter plot of q[n] for %d-QAM and $a=\\frac{1}{%d}$', M, 1/a))
 end
 
 %% Section 2.1. (p = δ[n] + a δ[n-1])
