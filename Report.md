@@ -26,6 +26,7 @@ Alonso Herreros Copete
 
 * [1. Signal-to-Noise ratio](#1-signal-to-noise-ratio)
 * [2. Inter-symbol interference](#2-inter-symbol-interference)
+* [3. Noise and BER](#3-noise-and-ber)
 
 ---
 
@@ -83,3 +84,5 @@ modulation.
 | ![alt](./figures/2.1.2.0-A.png) | ![alt](./figures/2.1.2.1-a-1-16th.png) | ![alt](./figures/2.1.2.2-a-1-8th.png) | ![alt](./figures/2.1.2.3-a-1-4th.png) |
 | ![alt](./figures/2.2.1.0-A.png) | ![alt](./figures/2.2.1.1-a-1-16th.png) | ![alt](./figures/2.2.1.2-a-1-8th.png) | ![alt](./figures/2.2.1.3-a-1-4th.png) |
 | ![alt](./figures/2.2.2.0-A.png) | ![alt](./figures/2.2.2.1-a-1-16th.png) | ![alt](./figures/2.2.2.2-a-1-8th.png) | ![alt](./figures/2.2.2.3-a-1-4th.png) |
+
+## 3. Noise and BER

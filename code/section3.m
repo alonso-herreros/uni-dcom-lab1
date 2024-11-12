@@ -26,36 +26,27 @@ set(groot, 'defaultLegendInterpreter', 'latex');
 
 %% Experiment definition
 
-function experiment(section)
+function [BER_data, SER_data] = experiment(Ms, SNRs)
 
     % Static params
-    persistent nSimb tAssig Es p Ms SNRs;
+    persistent nSimb tAssig Es p;
     nSimb = 1e6;            % Number of symbols in the simulation
     tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
     Es = 10;                % Mean Energy per Symbol
     p = [1];                % Equivalent discrete channel
 
-    Ms = [4 16 64];
-    SNRs = 0:1:20;
-
-    % Figure prefix
-    fprefix = sprintf('../figures/%d.%d', section(1), section(2));
-
     % Create original sequence A[n] and noiseless sequence o[n]
     
     % Get BERs for each M
     BER_data = zeros(numel(Ms), numel(SNRs));
+    SER_data = zeros(numel(Ms), numel(SNRs));
     for i=1:numel(Ms)
         M = Ms(i);
-        [B, ~, o] = experiment_init(M, nSimb, tAssig, p);
-        BER_data(i,:) = experiment_bers(M, tAssig, Es, B, o, SNRs);
-
-        % Plot
-        semilogy(SNRs, BER_data(i,:));
-        title(sprintf('Error probabilities for for %d-QAM and SNR=%d', M, snr))
+        [B, A, o] = experiment_init(M, nSimb, tAssig, p);
+        [BERs, SERs] = experiment_bers(M, tAssig, Es, A, B, o, SNRs);
+        BER_data(i,:) = BERs;
+        SER_data(i,:) = SERs;
     end
-    
-    print(sprintf('%s-plots.png', fprefix), '-dpng')
 end
 
 function [B, A, o] = experiment_init(M, nSimb, tAssig, p)
@@ -73,21 +64,64 @@ function [q, Be] = experiment_exec(M, tAssig, SNR_dB, Es, o)
     Be = qamdemod(q, M, tAssig, OutputType='bit');
 end
 
-function [BERs] = experiment_bers(M, tAssig, Es, B, o, snr_values)
-    % Get BER for each snr
+function [BERs, SERs] = experiment_bers(M, tAssig, Es, A, B, o, snr_values)
+    m = log2(M);
+    
+    % Get error rates for each snr
     BERs = zeros(size(snr_values));
+    SERs = zeros(size(snr_values));
     for i=1:numel(snr_values)
         snr = snr_values(i);
+
+        % Get demodulated bits
         [~, Be] = experiment_exec(M, tAssig, snr, Es, o);
-        BERs(i) = biterr(B, Be);
+        
+        % Bit error rate
+        [~, BERs(i)] = biterr(B, Be);
+
+        % Symbol error rate. Since qamdemod doesn't output estimated
+        % symbols, we'll use the fact that a single bit error in an
+        % aligned group of m=log2(M) bits is a symbol error
+        Berrs = B~=Be;
+        symbol_errors = 0;
+        for j=0:numel(B)/m-1
+            if (sum(Berrs(m*j+1:m*(j+1))) ~= 0)
+                symbol_errors = symbol_errors +1;
+            end
+        end
+        SERs(i) = double(symbol_errors)/double(numel(A));
     end
 end
 
-%% Section 3.1. (p = δ[n] + a δ[n-1])
+%% Section 3.
 
 section = [3 1];
+% Figure prefix
+fprefix = sprintf('../figures/%d.%d', section(1), section(2));
 
-% Section parameters
-M = 4;
+% Experiment parameters
+Ms = [4 16 64];
+SNRs = 0:1:20;
 
-experiment(M, section)
+[BER_data, SER_data] = experiment(Ms, SNRs);
+
+% Plots
+figure(1); clf; hold on;
+for i=1:numel(Ms)
+    semilogy(SNRs, BER_data(i,:), DisplayName=sprintf('BERs for %d-QAM', Ms(i)));
+end
+title('Bit error probabilities for different modulations');
+xlabel('Signal-to-noise ratio (dB)');
+ylabel('Bit error rate (probability)'); yscale log;
+legend('show');
+print(sprintf('%s.1-BERs.png', fprefix), '-dpng');
+ 
+figure(2); clf; hold on;
+for i=1:numel(Ms)
+    semilogy(SNRs, SER_data(i,:), DisplayName=sprintf('SERs for %d-QAM', Ms(i)));
+end
+title('Symbol error probabilities for different modulations');
+xlabel('Signal-to-noise ratio (dB)');
+ylabel('Symbol error rate (probability)'); yscale log;
+legend('show')
+print(sprintf('%s.2-SERs.png', fprefix), '-dpng');
