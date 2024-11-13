@@ -26,7 +26,9 @@ Alonso Herreros Copete
 
 * [1. Signal-to-Noise ratio](#1-signal-to-noise-ratio)
 * [2. Inter-symbol interference](#2-inter-symbol-interference)
-* [3. Noise and BER](#3-noise-and-ber)
+* [3. Noise and error rates](#3-noise-and-error-rates)
+    * [BER and SER](#ber-and-ser)
+    * [SER-to-BER ratio](#ser-to-ber-ratio)
 
 ---
 
@@ -85,4 +87,58 @@ modulation.
 | ![alt](./figures/2.2.1.0-A.png) | ![alt](./figures/2.2.1.1-a-1-16th.png) | ![alt](./figures/2.2.1.2-a-1-8th.png) | ![alt](./figures/2.2.1.3-a-1-4th.png) |
 | ![alt](./figures/2.2.2.0-A.png) | ![alt](./figures/2.2.2.1-a-1-16th.png) | ![alt](./figures/2.2.2.2-a-1-8th.png) | ![alt](./figures/2.2.2.3-a-1-4th.png) |
 
-## 3. Noise and BER
+## 3. Noise and error rates
+
+As requested in the instructions, the bit error rate (BER), symbol error rate
+(SER) and the SER/BER ratio were calculated for values of $\frac{E_b}{N_0}$
+between 0 and 20 dB in steps of 1 dB using Gray coding for 4-QAM, 16-QAM and
+64-QAM modulations.
+
+The results of each metric were displayed in the same figure for all three
+modulations, using logarithmic scales for the y-axis when necessary.
+
+### BER and SER
+
+The results for the bit and symbol error rates
+
+As expected, the error probabilities decreased with the increase of
+$\frac{E_b}{N_0}$, as the signal becomes more and more distinguishable from the
+noise when the SNR is high. The values can be seen below.
+
+![alt](./figures/3.1.1-BERs.png)
+<p class="caption">
+Figure 3.1.1: Bit error rates
+</p>
+
+![alt](./figures/3.1.2-SERs.png)
+<p class="caption">
+Figure 3.1.2: Symbol error rates
+</p>
+
+### SER-to-BER ratio
+
+The SER/BER ratio is also very interesting: it shows some growth as
+$\frac{E_b}{N_0}$ increases, but it seems to stabilize after a certain point.
+Also, we can see that this ratio is always greater than 1, as we can see in the following grpah:
+
+![alt](./figures/3.1.3-SER-BER-ratios.png)
+<p class="caption">
+Figure 3.1.3: Relationship between SER and BER
+</p>
+
+This might seem counterintuitive at first, but it is actually expected:
+
+* Given a symbol error, there is a guarantee of between 1 and $m$ bit errors,
+  where $m$ is the number of bits per symbol. Given
+
+As a corollary, we can never get more symbol errors than bit errors, nor more
+bit errors than $m$ times the number of symbol errors,
+
+So, when the BER is very low, it is almost guaranteed that each bit error is
+isolated, and constitutes exactly 1 symbol error, giving a 1-to-1 bit error to
+symbol error ratio. Since there are $m$ times as many bits as symbols, the
+SER/BER ratio tends to $m$ for very low error rates.
+
+Furthermore, since the maximum bit error to symbol error ratio is $m$, and
+there are $m$ times as many bits as symbols, the SER/BER ratio tends to 1 for
+very high error rates.
