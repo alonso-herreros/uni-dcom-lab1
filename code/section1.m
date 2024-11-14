@@ -8,15 +8,20 @@
 %
 %-------------------------------------------------------------------------
 
-%% -- Basic parameters
+%% -- Init
 
+set(groot,'defaulttextinterpreter','latex');
+set(groot, 'defaultLegendInterpreter', 'latex');
+
+% -- Basic parameters
 M = 16;                 % Constellation order
 m = log2(M);            % Bits per symbol
 nSimb = 1e6;            % Number of symbols in the simulation
 nBits = nSimb * m;      % Number of bits in the simulation
 tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
-SNR_dB = 25;            % S/N in dB
+% SNR_dB = 25;          % S/N in dB
 Es = 10;                % Mean Energy per Symbol
+Eb = Es/m;              % Mean Energy per bit
 p=[1];                  % Equivalent discrete channel
 
 
@@ -39,12 +44,12 @@ o = o(1:nSimb);
 
 %% -- AWGN
 
-i = 1;
-for snr=[20 15 10 5]
+snrb_values = [20 15 10 5]; % Eb/N0 in decibels, a.k.a. SNR per bit
+for i=1:numel(snrb_values)
+    snrb = snrb_values(i);
     % Additive White Gaussian Noise
-    q = awgn(o, snr, 10*log10(Es));
+    q = awgn(o, snrb, 10*log10(Eb));
     scatterplot(q);
-    title(sprintf('Scatter plot of q[n] for SNR=%d dB ($N_0 = %.3f$)', snr, Es * 10^(-snr/10)))
-    print(sprintf('../figures/section1/%d-snr%d.png', i, snr), '-dpng');
-    i = i+1;
+    title(sprintf('Scatter plot of q[n] for $\\frac{E_b}{N_0}=%d$ dB ($N_0 = %.3f$)', snrb, Eb * 10^(-snrb/10)))
+    print(sprintf('../figures/section1/%d-snrb%d.png', i, snrb), '-dpng');
 end

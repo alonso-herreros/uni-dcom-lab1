@@ -29,26 +29,28 @@ end
 
 %% Experiment definition
 
-function [BERs, SERs] = experiment(a, b, snr, ds, compensate)
+function [BERs, SERs] = experiment(a, b, snrb, ds, compensate)
     arguments
         a (1,1) double
         b (1,1) double
-        snr (1,:) double
+        snrb (1,:) double
         ds (1,:) double
         compensate (1,1) logical = false
     end
 
     % Static params
-    persistent M nSym tAssig Es p;
+    persistent M m nSym tAssig Es p Eb;
     M = 16;                 % Constellation order
+    m = log2(M);            % Bits per symbol
     nSym = 1e6;             % Number of symbols in the simulation
     tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
     Es = 10;                % Mean Energy per Symbol
-
+    Eb = Es/m;              % Mean Energy per bit
+    
     p = [-b/2 b a b -b/2];  % Equivalent discrete channel
 
     % Create original sequence A[n] and noiseless sequence o[n]
-    [B, ~, ~, q] = experiment_init(M, nSym, tAssig, p, snr, Es);
+    [B, ~, ~, q] = experiment_init(M, nSym, tAssig, p, snrb, Eb);
 
     % Get bit and symbol error rates
     BERs = zeros(size(ds));
@@ -61,7 +63,7 @@ function [BERs, SERs] = experiment(a, b, snr, ds, compensate)
     end
 end
 
-function [B, A, o, q] = experiment_init(M, nSym, tAssig, p, snr, Es)
+function [B, A, o, q] = experiment_init(M, nSym, tAssig, p, snrb, Eb)
     m = log2(M);            % Bits per symbol
     nBits = nSym * m;       % Number of bits in the simulation
 
@@ -74,7 +76,7 @@ function [B, A, o, q] = experiment_init(M, nSym, tAssig, p, snr, Es)
     o = o(1:nSym); % Truncate end - observations based on empty transmission
 
     % Get noisy sequence
-    q = awgn(o, snr, 10*log10(Es));
+    q = awgn(o, snrb, 10*log10(Eb));
 end
 
 % Get noisy sequence, estimated bits, BER, and SER
@@ -98,11 +100,11 @@ function [Be, BER, SER] = experiment_exec(M, tAssig, d, B, q, qfactor)
 end
 
 % Plot results
-function experiment_plot(a, b, snr, ds, BERs, SERs, section, title_append)
+function experiment_plot(a, b, snrb, ds, BERs, SERs, section, title_append)
     arguments
         a (1,1) double
         b (1,1) double
-        snr (1,:) double
+        snrb (1,:) double
         ds (1,:) double
         BERs (1,:) double
         SERs (1,:) double
@@ -119,7 +121,7 @@ function experiment_plot(a, b, snr, ds, BERs, SERs, section, title_append)
     bar(ds, BERs);
     text(ds, BERs, num2str(BERs', '%.5f'),'vert','bottom','horiz','center'); 
     grid on;
-    title(sprintf('BERs for $a=\\frac{1}{%d}$, $b=\\frac{1}{%d}$, SNR=%d dB%s', 1/a, 1/b, snr, title_append));
+    title(sprintf('BERs for $a=\\frac{1}{%d}$, $b=\\frac{1}{%d}$, $\\frac{E_b}{N_0}=%d$ dB%s', 1/a, 1/b, snrb, title_append));
     xlabel('Delay $d$');
     ylabel('Bit error rate (probability)'); ylim([0 0.6]);
     print(sprintf('%s.1-BERs.png', fprefix), '-dpng');
@@ -129,73 +131,73 @@ function experiment_plot(a, b, snr, ds, BERs, SERs, section, title_append)
     bar(ds, SERs);
     text(ds, SERs, num2str(SERs', '%.5f'),'vert','bottom','horiz','center'); 
     grid on;
-    title(sprintf('SERs for $a=\\frac{1}{%d}$, $b=\\frac{1}{%d}$, SNR=%d dB%s', 1/a, 1/b, snr, title_append));
+    title(sprintf('SERs for $a=\\frac{1}{%d}$, $b=\\frac{1}{%d}$, $\\frac{E_b}{N_0}=%d$ dB%s', 1/a, 1/b, snrb, title_append));
     xlabel('Delay $d$');
-    ylabel('Bit error rate (probability)'); ylim([0 1]);
+    ylabel('Symbol error rate (probability)'); ylim([0 1]);
     print(sprintf('%s.2-SERs.png', fprefix), '-dpng');
 end
 
-%% Section 4.1 (a=1, b=1/16, SNR=15 dB)
+%% Section 4.1 (a=1, b=1/16, SNRB=15 dB)
 section = [4 1]; secstr = join(string(section), '.');
 
 % Experiment parameters
 a = 1;
 b = 1/16;
-snr = 15;
+snrb = 15;
 ds = [0 1 2 3 4];
 
 % Run experiments
-fprintf('Running experiment %s with a=%d, b=%.2f, SNR=%d dB...\n', secstr,a,b,snr);
-[BERs, SERs] = experiment(a, b, snr, ds);
+fprintf('Running experiment %s with a=%d, b=%.2f, SNRB=%d dB...\n', secstr,a,b,snrb);
+[BERs, SERs] = experiment(a, b, snrb, ds);
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, section);
+experiment_plot(a,b,snrb,ds, BERs, SERs, section);
 
 
-%% Section 4.2 (a=1, b=1/4, SNR=15 dB)
+%% Section 4.2 (a=1, b=1/4, SNRB=15 dB)
 section = [4 2]; secstr = join(string(section), '.');
 
 % Experiment parameters
 a = 1;
 b = 1/4;
-snr = 15;
+snrb = 15;
 ds = [0 1 2 3 4];
 
 % Run experiments
-fprintf('Running experiment %s with a=%d, b=%.2f, SNR=%d dB...\n', secstr, a,b,snr);
-[BERs, SERs] = experiment(a, b, snr, ds);
+fprintf('Running experiment %s with a=%d, b=%.2f, SNRB=%d dB...\n', secstr, a,b,snrb);
+[BERs, SERs] = experiment(a, b, snrb, ds);
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, section);
+experiment_plot(a,b,snrb,ds, BERs, SERs, section);
 
-%% Section 4.3 (a=1/2, b=1/32, SNR=21 dB)
+%% Section 4.3 (a=1/2, b=1/32, SNRB=21 dB)
 section = [4 3]; secstr = join(string(section), '.');
 
 % Experiment parameters
 a = 1/2;
 b = 1/32;
-snr = 21;
+snrb = 21;
 ds = [0 1 2 3 4];
 
 % Run experiments
-fprintf('Running experiment %s with a=%.2f, b=%.2f, SNR=%d dB...\n', secstr, a,b,snr);
-[BERs, SERs] = experiment(a, b, snr, ds);
+fprintf('Running experiment %s with a=%.2f, b=%.2f, SNRB=%d dB...\n', secstr, a,b,snrb);
+[BERs, SERs] = experiment(a, b, snrb, ds);
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, section);
+experiment_plot(a,b,snrb,ds, BERs, SERs, section);
 
-%% Section 4.4 (a=1, b=1/4, SNR=15 dB, receiver adjusted)
+%% Section 4.4 (a=1, b=1/4, SNRB=15 dB, receiver adjusted)
 section = [4 4]; secstr = join(string(section), '.');
 
 % Experiment parameters do not change
 
 % Run experiments
-fprintf('Running experiment %s with a=%.2f, b=%.2f, SNR=%d dB, with q compensation...\n', secstr, a,b,snr);
-[BERs, SERs] = experiment(a, b, snr, ds, true);
+fprintf('Running experiment %s with a=%.2f, b=%.2f, SNRB=%d dB, with q compensation...\n', secstr, a,b,snrb);
+[BERs, SERs] = experiment(a, b, snrb, ds, true);
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, section, " with compensation");
+experiment_plot(a,b,snrb,ds, BERs, SERs, section, " with compensation");

@@ -13,29 +13,20 @@
 set(groot,'defaulttextinterpreter','latex');
 set(groot, 'defaultLegendInterpreter', 'latex');
 
-
-% M = 16;                 % Constellation order -- VAR
-% m = log2(M);            % Bits per symbol -- f(VAR)
-% nBits = nSimb * m;      % Number of bits in the simulation -- f(VAR)
-% global nSimb tAssig SNR_dB Es;
-% nSimb = 1e6;            % Number of symbols in the simulation
-% tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
-% SNR_dB = 40;            % S/N in dB
-% Es = 10;                % Mean Energy per Symbol
-% p=[1];                  % Equivalent discrete channel -- VAR
-
 %% Experiment definition
 
 function experiment(M, p_, section)
 
     % Static params
-    persistent nSimb tAssig SNR_dB Es a_values;
+    persistent nSimb tAssig snrb Es a_values;
     nSimb = 1e6;            % Number of symbols in the simulation
     tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
-    SNR_dB = 40;            % S/N in dB
+    snrb = 40;              % Eb/N0 in dB
     Es = 10;                % Mean Energy per Symbol
-
     a_values = [1/16 1/8 1/4];
+
+    m = log2(M);            % Bits per symbol
+    Eb = Es/m;              % Mean Energy per bit
 
     % Figure prefix
     fprefix = sprintf('../figures/section%d/%d.%d', section(1), section(2), section(3));
@@ -48,7 +39,7 @@ function experiment(M, p_, section)
     for i=1:numel(a_values)
         a = a_values(i);
         p = p_(a);
-        experiment2(M, nSimb, SNR_dB, Es, p, A, a);
+        experiment2(M, nSimb, snrb, Eb, p, A, a);
         print(sprintf('%s.%d-a-1-%dth.png', fprefix, i, 1/a), '-dpng');
     end
 end
@@ -67,10 +58,10 @@ function [B, A] = experiment1(M, nSimb, tAssig)
     title(sprintf('Scatter plot of original A[n] (%d-QAM)',M));
 end
 
-function [q] = experiment2(M, nSimb, SNR_dB, Es, p, A, a)
+function [q] = experiment2(M, nSimb, snr, Eb, p, A, a)
     o = conv(A, p); o = o(1:nSimb);
 
-    q = awgn(o, SNR_dB, 10*log10(Es));
+    q = awgn(o, snr, 10*log10(Eb));
 
     % Plot
     scatterplot(q);
@@ -87,6 +78,7 @@ section = [2 1 1];
 % Section parameters
 M = 4;
 
+fprintf('Running experiment 2.1.1 with %d-QAM...\n',M);
 experiment(M, p_, section)
 
 %% Section 2.1.2. (16-QAM)
@@ -95,6 +87,7 @@ section = [2 1 2];
 % Section parameters
 M = 16;
 
+fprintf('Running experiment 2.1.2 with %d-QAM...\n',M);
 experiment(M, p_, section)
 
 %% Section 2.2. (p = δ[n] + a δ[n-1] + a/4 δ[n-2])
@@ -107,6 +100,7 @@ section = [2 2 1];
 % Section parameters
 M = 4;
 
+fprintf('Running experiment 2.2.1 with %d-QAM...\n',M);
 experiment(M, p_, section)
 
 %% Section 2.2.2. (16-QAM)
@@ -115,6 +109,7 @@ section = [2 2 2];
 % Section parameters
 M = 16;
 
+fprintf('Running experiment 2.2.2 with %d-QAM...\n',M);
 experiment(M, p_, section)
 
 

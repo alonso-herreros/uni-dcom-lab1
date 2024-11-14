@@ -40,41 +40,42 @@ Alonso Herreros Copete
 ## 1. Signal-to-Noise ratio
 
 As instructed, the dispersion diagram for the 16-QAM signal was created for
-different SNRs, including the corresponding values of $N_0$. The results can be
-found in the following figures.
+different values of $\frac{E_b}{N_0}$ (also known as SNR per bit, which I have
+abbreviated using SNRB or SNRb), including the corresponding values of $N_0$.
+The results can be found in the following figures.
 
 ![alt](./figures/section1/0-A.png)
 <p class="caption">
 Figure 1.0: Original 16-QAM signal.
 </p>
 
-![alt](./figures/section1/1-snr20.png)
+![alt](./figures/section1/1-snrb20.png)
 <p class="caption">
-Figure 1.1: q[n] observed at SNR = 20 dB.
+Figure 1.1: q[n] observed at SNRB = 20 dB.
 </p>
 
-![alt](./figures/section1/2-snr15.png)
+![alt](./figures/section1/2-snrb15.png)
 <p class="caption">
-Figure 1.2: q[n] observed at SNR = 15 dB.
+Figure 1.2: q[n] observed at SNRB = 15 dB.
 </p>
 
-![alt](./figures/section1/3-snr10.png)
+![alt](./figures/section1/3-snrb10.png)
 <p class="caption">
-Figure 1.3: q[n] observed at SNR = 10 dB.
+Figure 1.3: q[n] observed at SNRB = 10 dB.
 </p>
 
-![alt](./figures/section1/4-snr5.png)
+![alt](./figures/section1/4-snrb5.png)
 <p class="caption">
-Figure 1.4: q[n] observed at SNR = 5 dB.
+Figure 1.4: q[n] observed at SNRB = 5 dB.
 </p>
 
-As we can observe in the figures, as the SNR decreases, the signal becomes very
+As we can observe in the figures, as the SNRB decreases, the signal becomes very
 hard to interpret.
 
 ## 2. Inter-symbol interference
 
 The dispersion diagrams requested were all created and can be found below. In
-these experiments, sine the SNR is very high (40 dB), the received sequences
+these experiments, sine the SNRB is very high (40 dB), the received sequences
 still look like they could be interpreted for the most part, except for the
 cases with $a = \frac{1}{4}$ and a 16-QAM signal.
 
@@ -108,7 +109,9 @@ The results for the bit and symbol error rates
 
 As expected, the error probabilities decreased with the increase of
 $\frac{E_b}{N_0}$, as the signal becomes more and more distinguishable from the
-noise when the SNR is high. The values can be seen below.
+noise when the SNRB is high. The values can be seen below. The missing data
+points are are extremely low values, to the point where they may not even be
+accurate, so they were omitted.
 
 ![alt](./figures/section3/1-BERs.png)
 <p class="caption">
@@ -123,15 +126,15 @@ Figure 3.2: Symbol error rates
 ### SER-to-BER ratio
 
 The SER/BER ratio is also very interesting: it shows some growth as
-$\frac{E_b}{N_0}$ increases, but it seems to stabilize after a certain point.
-Also, we can see that this ratio is always greater than 1, as we can see in the following grpah:
+$\frac{E_b}{N_0}$ increases, but it seems to stabilize after a certain point, as we can see in the following grpah:
 
 ![alt](./figures/section3/3-SER-BER-ratios.png)
 <p class="caption">
 Figure 3.3: Relationship between SER and BER
 </p>
 
-This might seem counterintuitive at first, but it is actually expected:
+Also, we can see that this ratio is always greater than 1. These limits might
+seem counterintuitive at first, but they are actually expected:
 
 * Given a symbol error, there is a guarantee of between 1 and $m$ bit errors,
   where $m$ is the number of bits per symbol. Given
@@ -157,19 +160,13 @@ Gray coding for a 16-QAM.
 The results of each metric were displayed in the same figure for all values of d
 using bar plots, as it seemed appropriate.
 
-### 4.1. $a=1$, $b=\frac{1}{16}$, SNR = 15 dB
+### 4.1. $a=1$, $b=\frac{1}{16}$, SNRB = 15 dB
 
 In this case, the difference between the probabilites of error was abysmal. This
 is to be expected, since the difference between the coefficients of the discrete
 equivalent channel is very high. For values of $d$ other than 2, the probability
 of error was very close to 0.5, meaning that we had essentially no information
 being transmitted.
-
-In fact, for $d=0$, and $d=4$, the probability of error was slightly greater
-than 0.5, which means we were guessing wrong more often than not. This can be
-reversed by guessing the opposite of what the demodulation algorithm says,
-turning this probability of error into a probability of success, which would get
-us a new probability of error $P_e' = 1 - P_e$
 
 For $d=2$, the probability of error was very low. This huge difference is show in
 the figures in terms of the BER and SER.
@@ -186,19 +183,20 @@ Figure 4.1.2: Symbol error rates for experiment 4.1
 
 Clearly, the optimal value of $d$ is 2.
 
-### 4.2. $a=1$, $b=\frac{1}{4}$, SNR = 15 dB
+### 4.2. $a=1$, $b=\frac{1}{4}$, SNRB = 15 dB
 
 In this case, the difference between the probabilites of error was not as
 evindent as in the previous case, but it was still very significant. For values
 of $d$ other than 2, the probability of error was very close to 0.5.
 
-In this case, for $d=0$, and $d=4$, the probability of error was significantly
-greater than 0.5, which means we were guessing wrong more often than not. Again,
-this can be reversed by guessing the opposite of what the demodulation algorithm
-says.
+In fact, for $d=0$, and $d=4$, the probability of error was slightly greater
+than 0.5, which means we were guessing wrong more often than not. This can be
+reversed by guessing the opposite of what the demodulation algorithm says,
+turning this probability of error into a probability of success, which would get
+us a new probability of error $P_e' = 1 - P_e$
 
-Despite that, the probability of error for $d=2$ was by far the lowest, as we
-can see in the figures below.
+Still, the probability of error for $d=2$ was by far the lowest, as we can see
+in the figures below.
 
 ![alt](./figures/section4/2.1-BERs.png)
 <p class="caption">
@@ -212,17 +210,16 @@ Figure 4.2.2: Symbol error rates for experiment 4.2
 
 Again, the optimal value of $d$ is 2.
 
-### 4.3. $a=\frac{1}{2}$, $b=\frac{1}{32}$, SNR = 21 dB
+### 4.3. $a=\frac{1}{2}$, $b=\frac{1}{32}$, SNRB = 21 dB
 
 This case was very similar to the first one, where the value of $b$ was also
 $\frac{a}{16}$. As before, the probabilities of error for values of $d$ other
-than 2 were very close to 0.5, with values slightly greater than 0.5 for $d=0$
-and $d=4$.
+than 2 were very close to 0.5.
 
 However, in this case, the probabilities of error for $d=2$ were much higher
 than any other case. This is because, for this value of $d$, the coefficient
 $p[d]$ was not 1, so the output sequence $q[n]$ should not be directly compared
-to the expected sequence $A[n]$.
+to the expected constellation $A$.
 
 The results can be seen in the following figures.
 
@@ -236,19 +233,15 @@ Figure 4.3.1: Bit error rates for experiment 4.3
 Figure 4.3.2: Symbol error rates for experiment 4.3
 </p>
 
-### 4.4. $a=\frac{1}{2}$, $b=\frac{1}{32}$, SNR = 21 dB, compensated
+### 4.4. $a=\frac{1}{2}$, $b=\frac{1}{32}$, SNRB = 21 dB, compensated
 
 In this extra section, I adjusted the receiving algorithm to be able to account
 for the coefficient of $p[d]$, and to scale the received sequence $q[d]$
 accordingly. Before demodulating the sequence $q[n]$, I multiplied every symbol
 by $\frac{1}{p[d]}$.
 
-The results were very positive, returning to the same error probabilites as the
-first case. In fact, in the cases where $d=0$ and $d=4$, since the coefficients
-for $p[d]$ were negative, this adjustment improved the error rates, bringing
-them below 0.5.
-
-The results can be seen in the following figures.
+The results were very positive, returning to error probabilities very close to
+the first case. The results can be seen in the following figures.
 
 ![alt](./figures/section4/4.1-BERs.png)
 <p class="caption">

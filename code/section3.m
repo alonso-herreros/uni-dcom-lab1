@@ -14,16 +14,6 @@ set(groot,'defaulttextinterpreter','latex');
 set(groot, 'defaultLegendInterpreter', 'latex');
 
 
-% M = 16;                 % Constellation order -- VAR
-% m = log2(M);            % Bits per symbol -- f(VAR)
-% nBits = nSimb * m;      % Number of bits in the simulation -- f(VAR)
-% global nSimb tAssig SNR_dB Es;
-% nSimb = 1e6;            % Number of symbols in the simulation
-% tAssig = 'gray';        % Type of binary assignement ('gray', 'bin')
-% SNR_dB = 40;            % S/N in dB
-% Es = 10;                % Mean Energy per Symbol
-% p=[1];                  % Equivalent discrete channel -- VAR
-
 %% Custom functions
 
 % Calculate symbol error rate based on bit errors and QAM order
@@ -40,7 +30,7 @@ end
 
 %% Experiment definition
 
-function [BERs, SERs] = experiment(M, SNRs)
+function [BERs, SERs] = experiment(M, SNRBs)
 
     % Static params
     persistent nSimb tAssig Es p;
@@ -49,16 +39,19 @@ function [BERs, SERs] = experiment(M, SNRs)
     Es = 10;                % Mean Energy per Symbol
     p = [1];                % Equivalent discrete channel
 
+    m = log2(M);            % Bits per symbol
+    Eb = Es/m;              % Mean Energy per bit
+
     % Create original sequence A[n] and noiseless sequence o[n]
     [B, ~, o] = experiment_init(M, nSimb, tAssig, p);
 
     % Get bit and symbol error rates
-    BERs = zeros(size(SNRs));
-    SERs = zeros(size(SNRs));
-    for i=1:numel(SNRs)
-        snr = SNRs(i);
+    BERs = zeros(size(SNRBs));
+    SERs = zeros(size(SNRBs));
+    for i=1:numel(SNRBs)
+        snrb = SNRBs(i);
         % Get error rates
-        [~, ~, BERs(i), SERs(i)] = experiment_exec(M, tAssig, snr, Es, B, o);
+        [~, ~, BERs(i), SERs(i)] = experiment_exec(M, tAssig, snrb, Eb, B, o);
     end
 end
 
@@ -75,9 +68,9 @@ function [B, A, o] = experiment_init(M, nSimb, tAssig, p)
 end
 
 % Get noisy sequence, estimated bits, BER, and SER
-function [q, Be, BER, SER] = experiment_exec(M, tAssig, snr, Es, B, o)
+function [q, Be, BER, SER] = experiment_exec(M, tAssig, snrb, Eb, B, o)
     % Get noisy sequence
-    q = awgn(o, snr, 10*log10(Es));
+    q = awgn(o, snrb, 10*log10(Eb));
     
     % Get demodulated bits
     Be = qamdemod(q, M, tAssig, OutputType='bit');
@@ -93,15 +86,15 @@ section = 3;
 
 % Experiment parameters
 Ms = [4 16 64];
-SNRs = 0:1:20;
+SNRBs = 0:1:20;
 
 % -- Run experiments
-BER_data = zeros(numel(Ms), numel(SNRs));
-SER_data = zeros(numel(Ms), numel(SNRs));
+BER_data = zeros(numel(Ms), numel(SNRBs));
+SER_data = zeros(numel(Ms), numel(SNRBs));
 for i=1:numel(Ms)
     M = Ms(i);
     fprintf('Running experiment for %d-QAM...\n',M);
-    [BER_data(i,:), SER_data(i,:)] = experiment(M, SNRs);
+    [BER_data(i,:), SER_data(i,:)] = experiment(M, SNRBs);
 end
 SER_BER_ratios = SER_data./BER_data;
 
@@ -114,11 +107,11 @@ fprefix = sprintf('../figures/section%d', section);
 % BERs
 figure(1); clf; hold on;
 for i=1:numel(Ms)
-    semilogy(SNRs, BER_data(i,:), DisplayName=sprintf('BERs for %d-QAM', Ms(i)));
+    semilogy(SNRBs, BER_data(i,:), '-o', DisplayName=sprintf('BERs for %d-QAM', Ms(i)));
 end; hold off;
 grid on;
 title('Bit error probabilities for different modulations');
-xlabel('Signal-to-noise ratio (dB)');
+xlabel('Signal-to-noise ratio per bit ($\frac{E_b}{N_0}$ in dB)');
 ylabel('Bit error rate (probability)'); yscale log;
 legend('show');
 print(sprintf('%s/1-BERs.png', fprefix), '-dpng');
@@ -126,11 +119,11 @@ print(sprintf('%s/1-BERs.png', fprefix), '-dpng');
 % SERs
 figure(2); clf; hold on;
 for i=1:numel(Ms)
-    semilogy(SNRs, SER_data(i,:), DisplayName=sprintf('SERs for %d-QAM', Ms(i)));
+    semilogy(SNRBs, SER_data(i,:), '-o', DisplayName=sprintf('SERs for %d-QAM', Ms(i)));
 end; hold off;
 grid on;
 title('Symbol error probabilities for different modulations');
-xlabel('Signal-to-noise ratio (dB)');
+xlabel('Signal-to-noise ratio per bit ($\frac{E_b}{N_0}$ in dB)');
 ylabel('Symbol error rate (probability)'); yscale log;
 legend('show')
 print(sprintf('%s/2-SERs.png', fprefix), '-dpng');
@@ -138,11 +131,11 @@ print(sprintf('%s/2-SERs.png', fprefix), '-dpng');
 % SER-BER ratios
 figure(3); clf; hold on;
 for i=1:numel(Ms)
-    plot(SNRs, SER_BER_ratios(i,:), DisplayName=sprintf('SER/BER ratio for %d-QAM', Ms(i)))
+    plot(SNRBs, SER_BER_ratios(i,:), '-o', DisplayName=sprintf('SER/BER ratio for %d-QAM', Ms(i)))
 end; hold off;
 grid on;
 title('SER-BER ratios for different modulations');
-xlabel('Signal-to-noise ratio (dB)');
+xlabel('Signal-to-noise ratio per bit ($\frac{E_b}{N_0}$ in dB)');
 ylabel('SER/BER (ratio)'); ylim([0, max(SER_BER_ratios, [], 'all')]);
 legend('show')
 print(sprintf('%s/3-SER-BER-ratios.png', fprefix), '-dpng');
