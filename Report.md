@@ -142,3 +142,114 @@ SER/BER ratio tends to $m$ for very low error rates.
 Furthermore, since the maximum bit error to symbol error ratio is $m$, and
 there are $m$ times as many bits as symbols, the SER/BER ratio tends to 1 for
 very high error rates.
+
+## 4. ISI and error rates
+
+As requested in the instructions, the bit error rate (BER) and symbol error rate
+(SER) were calculated for values of $d$ between 0 and 4 in steps of 1, using
+Gray coding for a 16-QAM.
+
+The results of each metric were displayed in the same figure for all values of d
+using bar plots, as it seemed appropriate.
+
+### 4.1. $a=1$, $b=\frac{1}{16}$, SNR = 15 dB
+
+In this case, the difference between the probabilites of error was abysmal. This
+is to be expected, since the difference between the coefficients of the discrete
+equivalent channel is very high. For values of $d$ other than 2, the probability
+of error was very close to 0.5, meaning that we had essentially no information
+being transmitted.
+
+In fact, for $d=0$, and $d=4$, the probability of error was slightly greater
+than 0.5, which means we were guessing wrong more often than not. This can be
+reversed by guessing the opposite of what the demodulation algorithm says,
+turning this probability of error into a probability of success, which would get
+us a new probability of error $P_e' = 1 - P_e$
+
+For $d=2, the probability of error was very low. This huge difference is show in
+the figures in terms of the BER and SER.
+
+![alt](./figures/4.1.1-BERs.png)
+<p class="caption">
+Figure 4.1.1: Bit error rates for experiment 4.1
+</p>
+
+![alt](./figures/4.1.2-SERs.png)
+<p class="caption">
+Figure 4.1.2: Symbol error rates for experiment 4.1
+</p>
+
+Clearly, the optimal value of $d$ is 2.
+
+### 4.2. $a=1$, $b=\frac{1}{4}$, SNR = 15 dB
+
+In this case, the difference between the probabilites of error was not as
+evindent as in the previous case, but it was still very significant. For values
+of $d$ other than 2, the probability of error was very close to 0.5.
+
+In this case, for $d=0$, and $d=4$, the probability of error was significantly
+greater than 0.5, which means we were guessing wrong more often than not. Again,
+this can be reversed by guessing the opposite of what the demodulation algorithm
+says.
+
+Despite that, the probability of error for $d=2$ was by far the lowest, as we
+can see in the figures below.
+
+![alt](./figures/4.2.1-BERs.png)
+<p class="caption">
+Figure 4.2.1: Bit error rates for experiment 4.2
+</p>
+
+![alt](./figures/4.2.2-SERs.png)
+<p class="caption">
+Figure 4.2.2: Symbol error rates for experiment 4.2
+</p>
+
+Again, the optimal value of $d$ is 2.
+
+### 4.3. $a=\frac{1}{2}$, $b=\frac{1}{32}$, SNR = 21 dB
+
+This case was very similar to the first one, where the value of $b$ was also
+$\frac{a}{16}$. As before, the probabilities of error for values of $d$ other
+than 2 were very close to 0.5, with values slightly greater than 0.5 for $d=0$
+and $d=4$.
+
+However, in this case, the probabilities of error for $d=2$ were much higher
+than any other case. This is because, for this value of $d$, the coefficient
+$p[d]$ was not 1, so the output sequence $q[n]$ should not be directly compared
+to the expected sequence $A[n]$.
+
+The results can be seen in the following figures.
+
+![alt](./figures/4.3.1-BERs.png)
+<p class="caption">
+Figure 4.3.1: Bit error rates for experiment 4.3
+</p>
+
+![alt](./figures/4.3.2-SERs.png)
+<p class="caption">
+Figure 4.3.2: Symbol error rates for experiment 4.3
+</p>
+
+### 4.4. $a=\frac{1}{2}$, $b=\frac{1}{32}$, SNR = 21 dB, compensated
+
+In this extra section, I adjusted the receiving algorithm to be able to account
+for the coefficient of $p[d]$, and to scale the received sequence $q[d]$
+accordingly. Before demodulating the sequence $q[n]$, I multiplied every symbol
+by $\frac{1}{p[d]}$.
+
+The results were very positive, returning to the same error probabilites as the
+first case. In fact, in the cases where $d=0$ and $d=4$, since the coefficients
+for $p[d]$ were negative, this adjustment improved the error rates, bringing
+them below 0.5.
+
+The results can be seen in the following figures.
+
+![alt](./figures/4.4.1-BERs.png)
+<p class="caption">
+Figure 4.4.1: Bit error rates for experiment 4.4
+</p>
+
+![alt](./figures/4.4.2-SERs.png)
+<p class="caption">
+Figure 4.4.2: Symbol error rates for experiment 4.4
