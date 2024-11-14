@@ -45,27 +45,27 @@ found in the following figures.
 
 ![alt](./figures/section1/0-A.png)
 <p class="caption">
-Figure 1.1.0: Original 16-QAM signal.
+Figure 1.0: Original 16-QAM signal.
 </p>
 
 ![alt](./figures/section1/1-snr20.png)
 <p class="caption">
-Figure 1.1.1: q[n] observed at SNR = 20 dB.
+Figure 1.1: q[n] observed at SNR = 20 dB.
 </p>
 
 ![alt](./figures/section1/2-snr15.png)
 <p class="caption">
-Figure 1.1.1: q[n] observed at SNR = 15 dB.
+Figure 1.2: q[n] observed at SNR = 15 dB.
 </p>
 
 ![alt](./figures/section1/3-snr10.png)
 <p class="caption">
-Figure 1.1.1: q[n] observed at SNR = 10 dB.
+Figure 1.3: q[n] observed at SNR = 10 dB.
 </p>
 
 ![alt](./figures/section1/4-snr5.png)
 <p class="caption">
-Figure 1.1.1: q[n] observed at SNR = 5 dB.
+Figure 1.4: q[n] observed at SNR = 5 dB.
 </p>
 
 As we can observe in the figures, as the SNR decreases, the signal becomes very
@@ -112,12 +112,12 @@ noise when the SNR is high. The values can be seen below.
 
 ![alt](./figures/section3/1-BERs.png)
 <p class="caption">
-Figure 3.1.1: Bit error rates
+Figure 3.1: Bit error rates
 </p>
 
 ![alt](./figures/section3/2-SERs.png)
 <p class="caption">
-Figure 3.1.2: Symbol error rates
+Figure 3.2: Symbol error rates
 </p>
 
 ### SER-to-BER ratio
@@ -128,7 +128,7 @@ Also, we can see that this ratio is always greater than 1, as we can see in the 
 
 ![alt](./figures/section3/3-SER-BER-ratios.png)
 <p class="caption">
-Figure 3.1.3: Relationship between SER and BER
+Figure 3.3: Relationship between SER and BER
 </p>
 
 This might seem counterintuitive at first, but it is actually expected:
@@ -171,7 +171,7 @@ reversed by guessing the opposite of what the demodulation algorithm says,
 turning this probability of error into a probability of success, which would get
 us a new probability of error $P_e' = 1 - P_e$
 
-For $d=2, the probability of error was very low. This huge difference is show in
+For $d=2$, the probability of error was very low. This huge difference is show in
 the figures in terms of the BER and SER.
 
 ![alt](./figures/section4/1.1-BERs.png)
