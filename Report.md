@@ -1,5 +1,5 @@
 ---
-title: Lab 1 Report
+title: Digital Communications - Lab 1 Report
 ---
 
 <style>
@@ -27,8 +27,7 @@ Alonso Herreros Copete
 * [1. Signal-to-Noise ratio](#1-signal-to-noise-ratio)
 * [2. Inter-symbol interference](#2-inter-symbol-interference)
 * [3. Noise and error rates](#3-noise-and-error-rates)
-    * [BER and SER](#ber-and-ser)
-    * [SER-to-BER ratio](#ser-to-ber-ratio)
+* [4. ISI and error rates](#4-isi-and-error-rates)
 
 ---
 
