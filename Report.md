@@ -29,6 +29,12 @@ Alonso Herreros Copete
 * [3. Noise and error rates](#3-noise-and-error-rates)
 * [4. ISI and error rates](#4-isi-and-error-rates)
 
+> **Note**
+>
+> The code, figures and other resources used during the development of this
+> lab session can be found in the following repository:  
+> <https://github.com/alonso-herreros/uni-dcom-lab1>
+
 ---
 
 ## 1. Signal-to-Noise ratio
