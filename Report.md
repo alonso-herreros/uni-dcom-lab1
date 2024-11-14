@@ -43,27 +43,27 @@ As instructed, the dispersion diagram for the 16-QAM signal was created for
 different SNRs, including the corresponding values of $N_0$. The results can be
 found in the following figures.
 
-![alt](./figures/1.1.0-A.png)
+![alt](./figures/section1/0-A.png)
 <p class="caption">
 Figure 1.1.0: Original 16-QAM signal.
 </p>
 
-![alt](./figures/1.1.1-snr20.png)
+![alt](./figures/section1/1-snr20.png)
 <p class="caption">
 Figure 1.1.1: q[n] observed at SNR = 20 dB.
 </p>
 
-![alt](./figures/1.1.2-snr15.png)
+![alt](./figures/section1/2-snr15.png)
 <p class="caption">
 Figure 1.1.1: q[n] observed at SNR = 15 dB.
 </p>
 
-![alt](./figures/1.1.3-snr10.png)
+![alt](./figures/section1/3-snr10.png)
 <p class="caption">
 Figure 1.1.1: q[n] observed at SNR = 10 dB.
 </p>
 
-![alt](./figures/1.1.4-snr5.png)
+![alt](./figures/section1/4-snr5.png)
 <p class="caption">
 Figure 1.1.1: q[n] observed at SNR = 5 dB.
 </p>
@@ -87,10 +87,10 @@ modulation.
 
 | Original A[n] | q[n] with $a = \frac{1}{16}$ | q[n] with $a = \frac{1}{8}$ | q[n] with $a = \frac{1}{4}$ |
 |---------------|-------------------------------|-----------------------------|-----------------------------|
-| ![alt](./figures/2.1.1.0-A.png) | ![alt](./figures/2.1.1.1-a-1-16th.png) | ![alt](./figures/2.1.1.2-a-1-8th.png) | ![alt](./figures/2.1.1.3-a-1-4th.png) |
-| ![alt](./figures/2.1.2.0-A.png) | ![alt](./figures/2.1.2.1-a-1-16th.png) | ![alt](./figures/2.1.2.2-a-1-8th.png) | ![alt](./figures/2.1.2.3-a-1-4th.png) |
-| ![alt](./figures/2.2.1.0-A.png) | ![alt](./figures/2.2.1.1-a-1-16th.png) | ![alt](./figures/2.2.1.2-a-1-8th.png) | ![alt](./figures/2.2.1.3-a-1-4th.png) |
-| ![alt](./figures/2.2.2.0-A.png) | ![alt](./figures/2.2.2.1-a-1-16th.png) | ![alt](./figures/2.2.2.2-a-1-8th.png) | ![alt](./figures/2.2.2.3-a-1-4th.png) |
+| ![alt](./figures/section2/1.1.0-A.png) | ![alt](./figures/section2/1.1.1-a-1-16th.png) | ![alt](./figures/section2/1.1.2-a-1-8th.png) | ![alt](./figures/section2/1.1.3-a-1-4th.png) |
+| ![alt](./figures/section2/1.2.0-A.png) | ![alt](./figures/section2/1.2.1-a-1-16th.png) | ![alt](./figures/section2/1.2.2-a-1-8th.png) | ![alt](./figures/section2/1.2.3-a-1-4th.png) |
+| ![alt](./figures/section2/2.1.0-A.png) | ![alt](./figures/section2/2.1.1-a-1-16th.png) | ![alt](./figures/section2/2.1.2-a-1-8th.png) | ![alt](./figures/section2/2.1.3-a-1-4th.png) |
+| ![alt](./figures/section2/2.2.0-A.png) | ![alt](./figures/section2/2.2.1-a-1-16th.png) | ![alt](./figures/section2/2.2.2-a-1-8th.png) | ![alt](./figures/section2/2.2.3-a-1-4th.png) |
 
 ## 3. Noise and error rates
 
@@ -110,12 +110,12 @@ As expected, the error probabilities decreased with the increase of
 $\frac{E_b}{N_0}$, as the signal becomes more and more distinguishable from the
 noise when the SNR is high. The values can be seen below.
 
-![alt](./figures/3.1.1-BERs.png)
+![alt](./figures/section3/1-BERs.png)
 <p class="caption">
 Figure 3.1.1: Bit error rates
 </p>
 
-![alt](./figures/3.1.2-SERs.png)
+![alt](./figures/section3/2-SERs.png)
 <p class="caption">
 Figure 3.1.2: Symbol error rates
 </p>
@@ -126,7 +126,7 @@ The SER/BER ratio is also very interesting: it shows some growth as
 $\frac{E_b}{N_0}$ increases, but it seems to stabilize after a certain point.
 Also, we can see that this ratio is always greater than 1, as we can see in the following grpah:
 
-![alt](./figures/3.1.3-SER-BER-ratios.png)
+![alt](./figures/section3/3-SER-BER-ratios.png)
 <p class="caption">
 Figure 3.1.3: Relationship between SER and BER
 </p>
@@ -174,12 +174,12 @@ us a new probability of error $P_e' = 1 - P_e$
 For $d=2, the probability of error was very low. This huge difference is show in
 the figures in terms of the BER and SER.
 
-![alt](./figures/4.1.1-BERs.png)
+![alt](./figures/section4/1.1-BERs.png)
 <p class="caption">
 Figure 4.1.1: Bit error rates for experiment 4.1
 </p>
 
-![alt](./figures/4.1.2-SERs.png)
+![alt](./figures/section4/1.2-SERs.png)
 <p class="caption">
 Figure 4.1.2: Symbol error rates for experiment 4.1
 </p>
@@ -200,12 +200,12 @@ says.
 Despite that, the probability of error for $d=2$ was by far the lowest, as we
 can see in the figures below.
 
-![alt](./figures/4.2.1-BERs.png)
+![alt](./figures/section4/2.1-BERs.png)
 <p class="caption">
 Figure 4.2.1: Bit error rates for experiment 4.2
 </p>
 
-![alt](./figures/4.2.2-SERs.png)
+![alt](./figures/section4/2.2-SERs.png)
 <p class="caption">
 Figure 4.2.2: Symbol error rates for experiment 4.2
 </p>
@@ -226,12 +226,12 @@ to the expected sequence $A[n]$.
 
 The results can be seen in the following figures.
 
-![alt](./figures/4.3.1-BERs.png)
+![alt](./figures/section4/3.1-BERs.png)
 <p class="caption">
 Figure 4.3.1: Bit error rates for experiment 4.3
 </p>
 
-![alt](./figures/4.3.2-SERs.png)
+![alt](./figures/section4/3.2-SERs.png)
 <p class="caption">
 Figure 4.3.2: Symbol error rates for experiment 4.3
 </p>
@@ -250,11 +250,11 @@ them below 0.5.
 
 The results can be seen in the following figures.
 
-![alt](./figures/4.4.1-BERs.png)
+![alt](./figures/section4/4.1-BERs.png)
 <p class="caption">
 Figure 4.4.1: Bit error rates for experiment 4.4
 </p>
 
-![alt](./figures/4.4.2-SERs.png)
+![alt](./figures/section4/4.2-SERs.png)
 <p class="caption">
 Figure 4.4.2: Symbol error rates for experiment 4.4

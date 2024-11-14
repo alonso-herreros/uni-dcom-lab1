@@ -98,7 +98,7 @@ function [Be, BER, SER] = experiment_exec(M, tAssig, d, B, q, qfactor)
 end
 
 % Plot results
-function experiment_plot(a, b, snr, ds, BERs, SERs, secstr, title_append)
+function experiment_plot(a, b, snr, ds, BERs, SERs, section, title_append)
     arguments
         a (1,1) double
         b (1,1) double
@@ -106,13 +106,13 @@ function experiment_plot(a, b, snr, ds, BERs, SERs, secstr, title_append)
         ds (1,:) double
         BERs (1,:) double
         SERs (1,:) double
-        secstr (1,1) string
+        section (1,:) double
         title_append (1,1) string = ""
     end
 
 
     % Figure prefix
-    fprefix = sprintf('../figures/%s', secstr);
+    fprefix = sprintf('../figures/section%d/%s', section(1), join(string(section(2:end)), '.'));
 
     % BERs
     figure; clf;
@@ -150,7 +150,7 @@ fprintf('Running experiment %s with a=%d, b=%.2f, SNR=%d dB...\n', secstr,a,b,sn
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, secstr);
+experiment_plot(a,b,snr,ds, BERs, SERs, section);
 
 
 %% Section 4.2 (a=1, b=1/4, SNR=15 dB)
@@ -168,7 +168,7 @@ fprintf('Running experiment %s with a=%d, b=%.2f, SNR=%d dB...\n', secstr, a,b,s
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, secstr);
+experiment_plot(a,b,snr,ds, BERs, SERs, section);
 
 %% Section 4.3 (a=1/2, b=1/32, SNR=21 dB)
 section = [4 3]; secstr = join(string(section), '.');
@@ -185,7 +185,7 @@ fprintf('Running experiment %s with a=%.2f, b=%.2f, SNR=%d dB...\n', secstr, a,b
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, secstr);
+experiment_plot(a,b,snr,ds, BERs, SERs, section);
 
 %% Section 4.4 (a=1, b=1/4, SNR=15 dB, receiver adjusted)
 section = [4 4]; secstr = join(string(section), '.');
@@ -198,4 +198,4 @@ fprintf('Running experiment %s with a=%.2f, b=%.2f, SNR=%d dB, with q compensati
 
 % Plots
 fprintf('Plotting data for section %s ...\n', secstr);
-experiment_plot(a,b,snr,ds, BERs, SERs, secstr, " with compensation");
+experiment_plot(a,b,snr,ds, BERs, SERs, section, " with compensation");

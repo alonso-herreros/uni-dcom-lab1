@@ -38,7 +38,7 @@ function experiment(M, p_, section)
     a_values = [1/16 1/8 1/4];
 
     % Figure prefix
-    fprefix = sprintf('../figures/%d.%d.%d', section(1), section(2), section(3));
+    fprefix = sprintf('../figures/section%d/%d.%d', section(1), section(2), section(3));
 
     % Experiment 1: Original sequence A[n]
     [~, A] = experiment1(M, nSimb, tAssig);

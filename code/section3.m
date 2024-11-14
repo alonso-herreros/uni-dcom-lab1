@@ -88,8 +88,8 @@ function [q, Be, BER, SER] = experiment_exec(M, tAssig, snr, Es, B, o)
 end
 
 
-%% Section 3.1 - Running experiments
-section = [3 1];
+%% Section 3 - Running experiments
+section = 3;
 
 % Experiment parameters
 Ms = [4 16 64];
@@ -105,11 +105,11 @@ for i=1:numel(Ms)
 end
 SER_BER_ratios = SER_data./BER_data;
 
-%% Section 3.1 - Plots
+%% Section 3 - Plots
 fprintf('Plotting data...\n');
 
 % Figure prefix
-fprefix = sprintf('../figures/%d.%d', section(1), section(2));
+fprefix = sprintf('../figures/section%d', section);
 
 % BERs
 figure(1); clf; hold on;
@@ -121,7 +121,7 @@ title('Bit error probabilities for different modulations');
 xlabel('Signal-to-noise ratio (dB)');
 ylabel('Bit error rate (probability)'); yscale log;
 legend('show');
-print(sprintf('%s.1-BERs.png', fprefix), '-dpng');
+print(sprintf('%s/1-BERs.png', fprefix), '-dpng');
  
 % SERs
 figure(2); clf; hold on;
@@ -133,7 +133,7 @@ title('Symbol error probabilities for different modulations');
 xlabel('Signal-to-noise ratio (dB)');
 ylabel('Symbol error rate (probability)'); yscale log;
 legend('show')
-print(sprintf('%s.2-SERs.png', fprefix), '-dpng');
+print(sprintf('%s/2-SERs.png', fprefix), '-dpng');
 
 % SER-BER ratios
 figure(3); clf; hold on;
@@ -145,4 +145,4 @@ title('SER-BER ratios for different modulations');
 xlabel('Signal-to-noise ratio (dB)');
 ylabel('SER/BER (ratio)'); ylim([0, max(SER_BER_ratios, [], 'all')]);
 legend('show')
-print(sprintf('%s.3-SER-BER-ratios.png', fprefix), '-dpng');
+print(sprintf('%s/3-SER-BER-ratios.png', fprefix), '-dpng');

@@ -29,7 +29,7 @@ A = qammod(B, M, tAssig, InputType='bit');
 % Scatter diagram
 f = figure(1);
 scatterplot(A);title('Scatter plot of original A[n]');
-print('figures/1.1.0-A.png', '-dpng');
+print('../figures/section1/0-A.png', '-dpng');
 
 
 %% -- Transmission through channel
@@ -45,6 +45,6 @@ for snr=[20 15 10 5]
     q = awgn(o, snr, 10*log10(Es));
     scatterplot(q);
     title(sprintf('Scatter plot of q[n] for SNR=%d dB ($N_0 = %.3f$)', snr, Es * 10^(-snr/10)))
-    print(sprintf('figures/1.1.%d-snr%d.png', i, snr), '-dpng');
+    print(sprintf('../figures/section1/%d-snr%d.png', i, snr), '-dpng');
     i = i+1;
 end
